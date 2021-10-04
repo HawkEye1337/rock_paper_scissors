@@ -11,49 +11,46 @@ function computerPlay() {
   }
   return selected;
 }
+
 let playerScore = 0,
   computerScore = 0;
-let playerChoice = "";
-let winnerMessage;
-let counter = 1;
+const buttons = document.querySelectorAll("button");
 
-function round(playerChoice, computerSelection) {
-  //change player input to lower case
-
-  // do {
-  //   playerChoice = playerSelection;
-  // } while (playerChoice === computerSelection);
+function playRound(playerChoice, computerSelection) {
   //check the winner and increase winner's score
-  if (
+  if (playerChoice === computerSelection) {
+    document.getElementById("result").textContent = `This match is a tie (${computerSelection})`;
+  } else if (
     (playerChoice === "scissors" && computerSelection === "paper") ||
     (playerChoice === "paper" && computerSelection === "rock") ||
     (playerChoice === "rock" && computerSelection === "scissors")
   ) {
-    winnerMessage = console.log(
-      `You win ${playerChoice} beats ${computerSelection}`
-    );
+    document.getElementById("result").textContent = `You win, ${playerChoice} beats ${computerSelection}`;
     playerScore++;
+    document.getElementById("score").textContent = `player ${playerScore} - ${computerScore} computer`;
+    if (playerScore == 5) {
+      document.getElementById("winner").textContent = `You won the series, reload to retry`;
+      disable();
+    }
   } else {
-    winnerMessage = console.log(
-      `You lose ${computerSelection} beats ${playerChoice}`
-    );
+    document.getElementById("result").textContent = `Computer wins, ${computerSelection} beats ${playerChoice}`;
     computerScore++;
-  }
-
-  if (counter === 5 && playerScore > computerScore) {
-    console.log("You won the series");
-  } else if (counter === 5 && computerScore > playerScore) {
-    console.log("You lost the series");
-  } else {
-    counter++;
-    console.log(counter);
-    return winnerMessage;
+    document.getElementById("score").textContent = `player ${playerScore} - ${computerScore} computer`;
+    if (computerScore == 5) {
+      document.getElementById("winner").textContent = `You lost the series, , reload to retry`;
+      disable();
+    }
   }
 }
 
-function game() {
-  for (let i = 0; i < 5; i++) {
-    round(prompt("Enter rock, paper or scissors", "rock"), computerPlay());
-  }
+buttons.forEach((button) => {
+  button.addEventListener("click", function () {
+    playRound(this.textContent, computerPlay());
+  });
+});
+
+function disable() {
+  buttons.forEach((el) => {
+    el.disabled = true;
+  });
 }
-game();
