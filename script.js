@@ -17,7 +17,7 @@ let playerScore = 0,
 const buttons = document.querySelectorAll("button");
 
 function playRound(playerChoice, computerSelection) {
-  //check the winner and increase winner's score
+  //check for a tie
   if (playerChoice === computerSelection) {
     document.getElementById("result").textContent = `This match is a tie (${computerSelection})`;
   } else if (
@@ -42,13 +42,14 @@ function playRound(playerChoice, computerSelection) {
     }
   }
 }
-
+//converts button press to text (r p or s) and call function playRound()
 buttons.forEach((button) => {
   button.addEventListener("click", function () {
     playRound(this.textContent, computerPlay());
   });
 });
 
+//disable buttons after either player get 5 wins
 function disable() {
   buttons.forEach((el) => {
     el.disabled = true;
